@@ -58,30 +58,67 @@
 
 // console.log(os.totalmem());
 
-const http = require("http");
-const fs = require("fs");
-const PORT = 2000;
-const hostname = "localhost";
-const home = fs.readFileSync("./index.html", "utf-8");
+// const http = require("http");
+// const fs = require("fs");
+// const path = require("path");
+// const PORT = 2000;
+// const hostname = "localhost";
+// const home = fs.readFileSync("./index.html", "utf-8");
 
-console.log(__filename);
-const server = http.createServer((req, res) => {
-  if (req.url === "/") {
+// console.log(__filename);
+// const server = http.createServer((req, res) => {
+//   if (req.url === "/") {
+//     return res.end(home);
+//   }
+//   if (req.url === "/about") {
+//     return res.end("<h1> ABOUT PAGE </h1>");
+//   }
+//   if (req.url === "/contact") {
+//     return res.end("<h1>CONTACT PAGE </h1>");
+//   }
+//   if (req.url === "/service") {
+//     return res.end("<h1>SERVICE PAGE</h1>");
+//   } else {
+//     return res.end("<h1> 404 Page Not Found </h1>");
+//   }
+// });
+
+// server.listen(PORT, hostname, () => {
+//   console.log(`Server is working on http://${hostname}:${PORT}`);
+// });
+
+const fs = require("fs");
+const path = require("path");
+
+module.exports = (req, res) => {
+  const { url } = req;
+
+  // Build absolute path to index.html
+  const filePath = path.join(__dirname, "..", "index.html");
+  let home;
+
+  try {
+    home = fs.readFileSync(filePath, "utf-8");
+  } catch (err) {
+    console.error("Error reading index.html:", err);
+    res.statusCode = 500;
+    return res.end("Internal Server Error");
+  }
+
+  res.setHeader("Content-Type", "text/html");
+
+  if (url === "/") {
     return res.end(home);
   }
-  if (req.url === "/about") {
+  if (url === "/about") {
     return res.end("<h1> ABOUT PAGE </h1>");
   }
-  if (req.url === "/contact") {
+  if (url === "/contact") {
     return res.end("<h1>CONTACT PAGE </h1>");
   }
-  if (req.url === "/service") {
+  if (url === "/service") {
     return res.end("<h1>SERVICE PAGE</h1>");
-  } else {
-    return res.end("<h1> 404 Page Not Found </h1>");
   }
-});
 
-server.listen(PORT, hostname, () => {
-  console.log(`Server is working on http://${hostname}:${PORT}`);
-});
+  return res.end("<h1> 404 Page Not Found </h1>");
+};
