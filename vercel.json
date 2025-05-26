@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/about",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/contact",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/service",
+      "destination": "/api/index.js"
+    }
+  ]
+}
